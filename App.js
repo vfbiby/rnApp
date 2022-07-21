@@ -13,7 +13,6 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
   useColorScheme,
   View,
@@ -30,25 +29,9 @@ import {
 const Section = ({ children, title }): Node => {
   const isDarkMode = useColorScheme() === "dark";
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View>
+      <Text className={"text-2xl p-2"}>{title}</Text>
+      <Text className={"text-sm px-2"}>{children}</Text>
     </View>
   );
 };
@@ -72,13 +55,17 @@ const App: () => Node = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <Section title="Step One">
-            Dont Edit <Text style={styles.highlight}>App.js</Text> to change
-            this screen and then come back to see your edits.
+            Dont Edit <Text>App.js</Text> to change this screen and then come
+            back to see your edits.
           </Section>
-          <Button title={"hello"}></Button>
+          <Button title={"goods"} />
           <Section title="See Your Changes">
             <ReloadInstructions />
           </Section>
+          <View className="flex-1 items-center justify-center bg-white">
+            <Text className="text-2xl p-2">Hello world!</Text>
+          </View>
+          <Button disabled={false} title={"hello"} />
           <Section title="Debug">
             <DebugInstructions />
           </Section>
@@ -91,24 +78,5 @@ const App: () => Node = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400",
-  },
-  highlight: {
-    fontWeight: "700",
-  },
-});
 
 export default App;
