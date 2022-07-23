@@ -8,8 +8,10 @@
     "start": "react-native start",
     "test": "jest --watch",
     "test:e2e": "detox test -c android",
-    "detox:build": "detox build --configuration android",
-    "detox:test": "detox test --configuration android"
+    "detox:build:android": "detox build --configuration android",
+    "detox:test:android": "detox test --configuration android",
+    "detox:build:ios": "detox build --configuration ios",
+    "detox:test:ios": "detox test --configuration ios"
   },
   "dependencies": {
     "nativewind": "^2.0.0-next.52",
