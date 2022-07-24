@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React from "react";
-import type { Node } from "react";
+import React from 'react';
+import type { Node } from 'react';
 import {
   Button,
   SafeAreaView,
@@ -16,7 +16,7 @@ import {
   Text,
   useColorScheme,
   View,
-} from "react-native";
+} from 'react-native';
 
 import {
   Colors,
@@ -24,20 +24,20 @@ import {
   Header,
   LearnMoreLinks,
   ReloadInstructions,
-} from "react-native/Libraries/NewAppScreen";
+} from 'react-native/Libraries/NewAppScreen';
 
 const Section = ({ children, title }): Node => {
-  const isDarkMode = useColorScheme() === "dark";
+  const isDarkMode = useColorScheme() === 'dark';
   return (
     <View>
-      <Text className={"text-2xl p-2"}>{title}</Text>
-      <Text className={"text-sm px-2"}>{children}</Text>
+      <Text className={'text-2xl p-2'}>{title}</Text>
+      <Text className={'text-sm px-2'}>{children}</Text>
     </View>
   );
 };
 
 const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === "dark";
+  const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -45,7 +45,7 @@ const App: () => Node = () => {
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
@@ -58,14 +58,14 @@ const App: () => Node = () => {
             Dont Edit <Text>App.js</Text> to change this screen and then come
             back to see your edits.
           </Section>
-          <Button title={"goods"} />
+          <Button title={'goods'} />
           <Section title="See Your Changes">
             <ReloadInstructions />
           </Section>
           <View className="flex-1 items-center justify-center bg-white">
             <Text className="text-2xl p-2">Hello world!</Text>
           </View>
-          <Button disabled={false} title={"hello"} />
+          <Button disabled={false} title={'hello'} />
           <Section title="Debug">
             <DebugInstructions />
           </Section>
