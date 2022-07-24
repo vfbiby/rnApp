@@ -9,14 +9,12 @@ import App from './App';
 import { UserSignupPage } from './src/UserSignupPage';
 import Example from './src/Example';
 
+const actions = {
+  postSignup: () => {},
+};
+
 const Wrapper = () => {
-  return (
-    <UserSignupPage
-      actions={{
-        postSignup: () => {},
-      }}
-    />
-  );
+  return <UserSignupPage actions={actions} />;
 };
 
 // AppRegistry.registerComponent(appName, () => App);

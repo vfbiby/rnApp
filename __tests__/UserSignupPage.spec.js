@@ -1,5 +1,10 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react-native';
 import { UserSignupPage } from '../src/UserSignupPage';
 
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
@@ -92,22 +97,21 @@ describe('UserSignupPage', () => {
       passwordInput,
       passwordRepeatInput;
 
-    function setupForSubmit(actions) {
-      const rendered = render(<UserSignupPage actions={actions} />);
+    function setupForSubmit(props) {
+      const rendered = render(<UserSignupPage {...props} />);
       const { queryByPlaceholderText, queryByRole } = rendered;
 
       displayNameInput = queryByPlaceholderText('Your display name');
       usernameInput = queryByPlaceholderText('Your username');
       passwordInput = queryByPlaceholderText('Your password');
       passwordRepeatInput = queryByPlaceholderText('Repeat your password');
-      button = queryByRole('button');
 
       fireEvent.changeText(displayNameInput, 'James Zhang');
       fireEvent.changeText(usernameInput, 'zhang');
       fireEvent.changeText(passwordInput, 'P4sword');
       fireEvent.changeText(passwordRepeatInput, 'P4sword');
-      fireEvent.press(button);
 
+      button = queryByRole('button');
       return rendered;
     }
 
@@ -115,7 +119,8 @@ describe('UserSignupPage', () => {
       const actions = {
         postSignup: jest.fn().mockResolvedValueOnce({}),
       };
-      setupForSubmit(actions);
+      setupForSubmit({ actions });
+      fireEvent.press(button);
       const expectedUserObject = {
         username: 'zhang',
         displayName: 'James Zhang',
@@ -140,7 +145,7 @@ describe('UserSignupPage', () => {
       const actions = {
         postSignup: mockAsyncDelayed(),
       };
-      setupForSubmit(actions);
+      setupForSubmit({ actions });
       fireEvent.press(button);
       fireEvent.press(button);
       expect(actions.postSignup).toHaveBeenCalledTimes(1);
@@ -150,10 +155,62 @@ describe('UserSignupPage', () => {
       const actions = {
         postSignup: mockAsyncDelayed(),
       };
-      const { queryByText, getByText } = setupForSubmit(actions);
+      const { queryByText } = setupForSubmit({ actions });
       fireEvent.press(button);
       const spinner = queryByText('Loading...');
       expect(spinner).toBeTruthy();
+    });
+
+    it('should hide spinner after api call finishes successfully', async () => {
+      const actions = {
+        postSignup: mockAsyncDelayed(),
+      };
+      const { queryByText } = setupForSubmit({ actions });
+      fireEvent.press(button);
+      await waitFor(() => {
+        expect(queryByText('Loading...')).toBeNull();
+      });
+    });
+
+    it('should hide spinner after api call finishes with error', async () => {
+      const actions = {
+        postSignup: jest.fn().mockImplementation(() => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              reject({ response: { data: {} } });
+            }, 100);
+          });
+        }),
+      };
+      const { queryByText } = setupForSubmit({ actions });
+      fireEvent.press(button);
+      await waitFor(() => {
+        expect(queryByText('Loading...')).toBeNull();
+      });
+    });
+
+    it('should display validation error for displayName when error is received for the field', async () => {
+      const actions = {
+        postSignup: jest.fn().mockRejectedValue({
+          response: {
+            data: {
+              validationErrors: {
+                displayName: 'Cannot be null.',
+              },
+            },
+          },
+        }),
+      };
+      const { queryByText } = setupForSubmit({ actions });
+      fireEvent.press(button);
+      await waitFor(() => {
+        expect(queryByText('Cannot be null.')).toBeTruthy();
+      });
+    });
+
+    it('should enable the signup button when password and repeat password have same value', async () => {
+      setupForSubmit();
+      expect(button).not.toBeDisabled();
     });
   });
 });

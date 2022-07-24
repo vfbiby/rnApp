@@ -18,6 +18,7 @@ export function UserSignupPage({ actions }) {
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
   const [pendingApiCall, setPendingApiCall] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const onSignup = () => {
     setPendingApiCall(true);
@@ -27,7 +28,15 @@ export function UserSignupPage({ actions }) {
       password,
     };
     if (actions.postSignup) {
-      actions.postSignup(user);
+      actions
+        .postSignup(user)
+        .then(() => setPendingApiCall(false))
+        .catch(apiError => {
+          let tempErrors;
+          tempErrors = { ...apiError.response.data.validationErrors };
+          setErrors(tempErrors);
+          setPendingApiCall(false);
+        });
     }
   };
 
@@ -40,6 +49,7 @@ export function UserSignupPage({ actions }) {
           onChangeText={setDisplayName}
           placeholder={'Your display name'}
         />
+        {errors.displayName && <Text>{errors.displayName}</Text>}
         <CustomInput
           value={username}
           onChangeText={setUsername}
@@ -58,12 +68,16 @@ export function UserSignupPage({ actions }) {
           secureTextEntry={true}
           placeholder={'Repeat your password'}
         />
-        <Button
-          disabled={pendingApiCall}
-          onPress={onSignup}
-          title={'sign up'}
-        />
-        {pendingApiCall && <Text>Loading...</Text>}
+        <View>
+          <Button
+            disabled={pendingApiCall}
+            onPress={onSignup}
+            title={'sign up'}
+          />
+          {pendingApiCall && (
+            <Text className={'animate-ping text-red-400'}>Loading...</Text>
+          )}
+        </View>
       </View>
     </SafeAreaView>
   );
