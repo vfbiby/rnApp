@@ -15,7 +15,7 @@ export function Input(props) {
       <TextInput
         className={className}
         class={className}
-        onChangeText={props.onChange}
+        onChange={props.onChange}
         placeholder={props.placeholder}
         value={props.value}
         type={props.type || 'text'}

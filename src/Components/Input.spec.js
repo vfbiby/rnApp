@@ -50,7 +50,7 @@ describe('Layout', function () {
     const onChange = jest.fn();
     render(<Input onChange={onChange} />);
     const input = screen.queryByTestId('input');
-    fireEvent.changeText(input, 'Changed value');
+    fireEvent(input, 'change', { target: { value: 'new-input' } });
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 
