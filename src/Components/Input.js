@@ -19,7 +19,7 @@ export function Input(props) {
         placeholder={props.placeholder}
         value={props.value}
         type={props.type || 'text'}
-        secureTextEntry={props.type}
+        secureTextEntry={props.type && true}
         testID={'input'}
       />
       {props.hasError && <Text>{props.error}</Text>}

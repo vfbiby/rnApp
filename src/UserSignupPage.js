@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
-import {
-  ActivityIndicator,
-  Button,
-  SafeAreaView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Button, SafeAreaView, Text, TextInput, View } from 'react-native';
+import { Input } from './Components/Input';
 
 const CustomInput = ({ children, placeholder, ...other }): Node => {
   return (
@@ -52,18 +46,19 @@ export function UserSignupPage({ actions }) {
     <SafeAreaView>
       <View className={'px-4'}>
         <Text className={'text-2xl pt-4 px-3'}>Sign Up</Text>
-        <CustomInput
+        <Input
           value={displayName}
+          hasError={true}
+          error={errors.displayName}
           onChangeText={setDisplayName}
           placeholder={'Your display name'}
         />
-        {errors.displayName && <Text>{errors.displayName}</Text>}
-        <CustomInput
+        <Input
           value={username}
           onChangeText={setUsername}
           placeholder={'Your username'}
         />
-        <CustomInput
+        <Input
           value={password}
           onChangeText={text => {
             const passwordRepeatConfirmed = text === passwordRepeat;
@@ -76,10 +71,10 @@ export function UserSignupPage({ actions }) {
             setErrors(tempErrors);
             setPassword(text);
           }}
-          secureTextEntry={true}
+          type={'password'}
           placeholder={'Your password'}
         />
-        <CustomInput
+        <Input
           value={passwordRepeat}
           onChangeText={text => {
             const passwordRepeatConfirmed = text === password;
@@ -91,11 +86,12 @@ export function UserSignupPage({ actions }) {
             setErrors(tempErrors);
             setPasswordRepeat(text);
           }}
+          hasError={true}
+          error={errors.passwordRepeat}
           className={'mb-4'}
-          secureTextEntry={true}
+          type={'password'}
           placeholder={'Repeat your password'}
         />
-        {errors.passwordRepeat && <Text>{errors.passwordRepeat}</Text>}
         <View>
           <Button
             disabled={pendingApiCall || !passwordRepeatConfirmed}
