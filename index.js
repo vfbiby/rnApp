@@ -10,7 +10,10 @@ import { UserSignupPage } from './src/UserSignupPage';
 import Example from './src/Example';
 
 const actions = {
-  postSignup: () => {},
+  postSignup: () =>
+    new Promise(resolve => {
+      resolve({});
+    }),
 };
 
 const Wrapper = () => {

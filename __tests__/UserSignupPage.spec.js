@@ -208,9 +208,35 @@ describe('UserSignupPage', () => {
       });
     });
 
-    it('should enable the signup button when password and repeat password have same value', async () => {
+    it('should enable the signup button when password and repeat password have same value', () => {
       setupForSubmit();
       expect(button).not.toBeDisabled();
+    });
+
+    it('should disable the signup button when password repeat does not match to password', () => {
+      setupForSubmit();
+      fireEvent.changeText(passwordRepeatInput, 'new-pass');
+      expect(button).toBeDisabled();
+    });
+
+    it('should disable the signup button when password does not match to password repeat', () => {
+      setupForSubmit();
+      fireEvent.changeText(passwordInput, 'new-pass');
+      expect(button).toBeDisabled();
+    });
+
+    it('should display error style for password repeat input when password repeat mismatch', () => {
+      const { queryByText } = setupForSubmit();
+      fireEvent.changeText(passwordRepeatInput, 'new-pass');
+      const mismatchWarning = queryByText('Does not match to password');
+      expect(mismatchWarning).not.toBeNull();
+    });
+
+    it('should display error style for password repeat input when password mismatch', () => {
+      const { queryByText } = setupForSubmit();
+      fireEvent.changeText(passwordInput, 'new-pass');
+      const mismatchWarning = queryByText('Does not match to password');
+      expect(mismatchWarning).not.toBeNull();
     });
   });
 });

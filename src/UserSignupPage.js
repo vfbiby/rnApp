@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Button, SafeAreaView, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  SafeAreaView,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
 const CustomInput = ({ children, placeholder, ...other }): Node => {
   return (
@@ -19,6 +26,7 @@ export function UserSignupPage({ actions }) {
   const [passwordRepeat, setPasswordRepeat] = useState('');
   const [pendingApiCall, setPendingApiCall] = useState(false);
   const [errors, setErrors] = useState({});
+  const [passwordRepeatConfirmed, setPasswordRepeatConfirmed] = useState(true);
 
   const onSignup = () => {
     setPendingApiCall(true);
@@ -27,7 +35,7 @@ export function UserSignupPage({ actions }) {
       displayName,
       password,
     };
-    if (actions.postSignup) {
+    if (actions) {
       actions
         .postSignup(user)
         .then(() => setPendingApiCall(false))
@@ -57,20 +65,40 @@ export function UserSignupPage({ actions }) {
         />
         <CustomInput
           value={password}
-          onChangeText={setPassword}
+          onChangeText={text => {
+            const passwordRepeatConfirmed = text === passwordRepeat;
+            setPasswordRepeatConfirmed(passwordRepeatConfirmed);
+            const tempErrors = { ...errors };
+            tempErrors.passwordRepeat = passwordRepeatConfirmed
+              ? ''
+              : 'Does not match to password';
+            setPasswordRepeatConfirmed(passwordRepeatConfirmed);
+            setErrors(tempErrors);
+            setPassword(text);
+          }}
           secureTextEntry={true}
           placeholder={'Your password'}
         />
         <CustomInput
           value={passwordRepeat}
-          onChangeText={setPasswordRepeat}
+          onChangeText={text => {
+            const passwordRepeatConfirmed = text === password;
+            const tempErrors = { ...errors };
+            tempErrors.passwordRepeat = passwordRepeatConfirmed
+              ? ''
+              : 'Does not match to password';
+            setPasswordRepeatConfirmed(passwordRepeatConfirmed);
+            setErrors(tempErrors);
+            setPasswordRepeat(text);
+          }}
           className={'mb-4'}
           secureTextEntry={true}
           placeholder={'Repeat your password'}
         />
+        {errors.passwordRepeat && <Text>{errors.passwordRepeat}</Text>}
         <View>
           <Button
-            disabled={pendingApiCall}
+            disabled={pendingApiCall || !passwordRepeatConfirmed}
             onPress={onSignup}
             title={'sign up'}
           />
