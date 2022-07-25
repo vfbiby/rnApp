@@ -45,8 +45,9 @@ export function UserSignupPage({ actions }) {
   return (
     <SafeAreaView>
       <View className={'px-4'}>
-        <Text className={'text-2xl pt-4 px-3'}>Sign Up</Text>
+        <Text className={'text-2xl py-4 px-3'}>Sign Up</Text>
         <Input
+          className={'border-red-300'}
           value={displayName}
           hasError={true}
           error={errors.displayName}
@@ -55,11 +56,13 @@ export function UserSignupPage({ actions }) {
         />
         <Input
           value={username}
+          className={'border-red-300'}
           onChangeText={setUsername}
           placeholder={'Your username'}
         />
         <Input
           value={password}
+          className={'border-red-300'}
           onChangeText={text => {
             const passwordRepeatConfirmed = text === passwordRepeat;
             setPasswordRepeatConfirmed(passwordRepeatConfirmed);
@@ -88,7 +91,7 @@ export function UserSignupPage({ actions }) {
           }}
           hasError={true}
           error={errors.passwordRepeat}
-          className={'mb-4'}
+          className={'mb-4 border-red-300'}
           type={'password'}
           placeholder={'Repeat your password'}
         />

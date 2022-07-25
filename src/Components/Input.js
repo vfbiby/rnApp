@@ -6,14 +6,12 @@ export function Input(props) {
   if (props.hasError !== undefined) {
     className = props.hasError ? 'is-invalid' : 'is-valid';
   }
-  if (props.className) {
-    className += className === '' ? props.className : ' ' + props.className;
-  }
   return (
     <View>
       {props.label && <Text>{props.label}</Text>}
       <TextInput
-        className={className}
+        style={props.style}
+        className={'border my-2'}
         class={className}
         onChange={props.onChange}
         placeholder={props.placeholder}
@@ -22,7 +20,9 @@ export function Input(props) {
         secureTextEntry={props.type && true}
         testID={'input'}
       />
-      {props.hasError && <Text>{props.error}</Text>}
+      {props.hasError && props.error && (
+        <Text className={'border'}>{props.error}</Text>
+      )}
     </View>
   );
 }
