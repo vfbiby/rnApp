@@ -54,6 +54,13 @@ describe('Layout', function () {
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 
+  it('should set value into state', function () {
+    render(<Input />);
+    const input = screen.queryByTestId('input');
+    fireEvent(input, 'change', { target: { value: 'new-input' } });
+    expect(input.props.value).toBe('new-input');
+  });
+
   it('should has not default style when there is no validation error or success', function () {
     render(<Input />);
     const input = screen.queryByTestId('input');
