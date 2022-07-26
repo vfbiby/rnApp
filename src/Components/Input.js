@@ -1,20 +1,22 @@
 import React from 'react';
 import { Text, TextInput, View } from 'react-native';
+import classNames from 'classnames';
 
 export function Input(props) {
-  let className: string = '';
-  if (props.hasError !== undefined) {
-    className = props.hasError ? 'is-invalid' : 'is-valid';
-  }
-  if (props.className) {
-    className += className === '' ? props.className : ' ' + props.className;
-  }
+  const validationError = props.hasError !== undefined && props.hasError;
+  const validationSuccess = props.hasError !== undefined && !props.hasError;
+  const classname = classNames(
+    { 'is-invalid': validationError },
+    { 'is-valid': validationSuccess },
+    props.className,
+  );
+
   return (
     <View>
       {props.label && <Text>{props.label}</Text>}
       <TextInput
         style={props.style}
-        className={className}
+        className={classname}
         onChange={props.onChange}
         placeholder={props.placeholder}
         value={props.value}
