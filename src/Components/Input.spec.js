@@ -57,19 +57,19 @@ describe('Layout', function () {
   it('should has not default style when there is no validation error or success', function () {
     render(<Input />);
     const input = screen.queryByTestId('input');
-    expect(input.props.class).toBe('');
+    expect(input.props.className).toBe('');
   });
 
   it('should has success style hasError properties false', function () {
     render(<Input hasError={false} />);
     const input = screen.queryByTestId('input');
-    expect(input.props.class).toBe('is-valid');
+    expect(input.props.className).toBe('is-valid');
   });
 
   it('should has style for error when there is error', function () {
     render(<Input hasError={true} />);
     const input = screen.queryByTestId('input');
-    expect(input.props.class).toBe('is-invalid');
+    expect(input.props.className).toBe('is-invalid');
   });
 
   it('should displays the error text when it is provided', function () {
@@ -82,10 +82,10 @@ describe('Layout', function () {
     expect(screen.queryByText('Cannot be null')).toBeNull();
   });
 
-  it.skip('should has class style when it is provided', function () {
+  it('should has class style when it is provided', function () {
     render(<Input className={'rounded'} />);
     const input = screen.queryByTestId('input');
-    expect(input.props.class).toBe('rounded');
+    expect(input.props.className).toBe('rounded');
   });
 
   it('should ', function () {});
